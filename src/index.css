@@ -114,13 +114,14 @@
 .hero-atmosphere{opacity:.2}
 @media(max-width:640px){.hero::before{background:linear-gradient(180deg,rgba(18,10,28,.42),rgba(18,10,28,.20)),url('/Background/gym-hero-mobile.webp') 70% center/cover no-repeat}}
 
-/* Put the image and tint on the same layer so the local background shorthand
-   cannot cover the pseudo-element image in the production stylesheet. */
-.hero{background:#160a24 url('/Background/gym-hero-desktop.webp') center/cover no-repeat}
-.hero::before{background:linear-gradient(90deg,rgba(18,10,28,.34) 0%,rgba(18,10,28,.14) 55%,rgba(18,10,28,.04) 100%)}
+/* Keep the photo rule after palette shorthands so it remains visible. */
+.hero::before{background:linear-gradient(90deg,rgba(18,10,28,.34) 0%,rgba(18,10,28,.14) 55%,rgba(18,10,28,.04) 100%),url('/Background/gym-hero-desktop.webp') center/cover no-repeat!important}
+@media(max-width:640px){.hero::before{background:linear-gradient(180deg,rgba(18,10,28,.34),rgba(18,10,28,.16)),url('/Background/gym-hero-mobile.webp') 70% center/cover no-repeat!important}}
+.hero{background:linear-gradient(90deg,rgba(18,10,28,.28),rgba(18,10,28,.06)),url('/Background/gym-hero-desktop.webp') center/cover no-repeat!important}
+.hero::before{background:none!important}
+@media(max-width:640px){.hero{background:linear-gradient(180deg,rgba(18,10,28,.30),rgba(18,10,28,.12)),url('/Background/gym-hero-mobile.webp') 70% center/cover no-repeat!important}}
 @media(max-width:640px){
-  .hero{background-image:url('/Background/gym-hero-mobile.webp');background-position:70% center}
-  .hero::before{background:linear-gradient(180deg,rgba(16,8,27,.60) 0%,rgba(16,8,27,.48) 54%,rgba(16,8,27,.30) 100%)}
+  .hero{background:linear-gradient(180deg,rgba(16,8,27,.60) 0%,rgba(16,8,27,.48) 54%,rgba(16,8,27,.30) 100%),url('/Background/gym-hero-mobile.webp') 70% center/cover no-repeat!important}
   .hero-copy{width:100%;min-width:0}
   .hero h1{width:100%;max-width:100%;font-size:clamp(32px,9.2vw,38px);line-height:1.12;letter-spacing:-.055em;text-wrap:balance;overflow-wrap:normal}
   .hero h1 span{letter-spacing:-.055em}
