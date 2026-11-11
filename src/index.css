@@ -182,6 +182,12 @@ body{color:var(--palette-charcoal);background:var(--palette-white)}
 .hero{background-color:var(--palette-violet)}
 .hero::before{background:radial-gradient(ellipse at 75% 20%,#9946f988,transparent 48%),radial-gradient(ellipse at 8% 82%,#1970f066,transparent 40%),linear-gradient(112deg,#4b10a0 8%,#9946f9 56%,#4b10a0)}
 .hero-decoration-two{background:radial-gradient(circle,#f1c93535,transparent 68%)}
+
+/* Use the supplied gym photos without any gradient or glow overlays. */
+.hero{background:#160a24 url('/gym-hero-desktop.webp') center/cover no-repeat!important}
+.hero::before{content:none!important;background:none!important}
+.hero-atmosphere,.hero-glow,.hero-decoration{display:none!important}
+@media(max-width:640px){.hero{background:#160a24 url('/gym-hero-mobile.webp') 70% center/cover no-repeat!important}}
 .hero-topbar .brand-icon{background:var(--palette-lilac);color:var(--palette-white)}
 .hero-topbar .button-primary,.hero-action .button-primary,.offer-box .button-primary,.nav-cta,.mobile-cta .button-primary{background:var(--palette-yellow);color:var(--palette-charcoal)}
 .hero-topbar .button-primary:hover,.hero-action .button-primary:hover,.offer-box .button-primary:hover,.nav-cta:hover,.mobile-cta .button-primary:hover{background:#ffdc56;color:var(--palette-charcoal)}
