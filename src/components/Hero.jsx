@@ -15,7 +15,7 @@ export default function Hero() {
           <span className="brand-icon" aria-hidden="true">G</span>
           <span>{content.brand}<small>WITH AZHAR ALI SAYED</small></span>
         </a>
-        <Button href={content.cta.href}>{content.cta.label}</Button>
+        <Button href={content.cta.href} arrow={false}>{content.cta.navLabel}</Button>
       </div>
       <div className="hero-glow" aria-hidden="true" />
       <div className="hero-decoration hero-decoration-one" aria-hidden="true" />
@@ -44,7 +44,6 @@ export default function Hero() {
           <div className="visual-caption"><span>WORKSHOP OVERVIEW</span><b>Strategy. Clarity. Sustainable Growth.</b></div>
         </div>
       </div>
-      <div className="hero-bottom"><div className="site-width hero-bottom-inner"><span>FOR GYM OWNERS READY TO GROW</span><span className="hero-bottom-line" /><span>90-DAY GROWTH FRAMEWORK</span></div></div>
       <GymLogoCarousel />
     </section>
   )
