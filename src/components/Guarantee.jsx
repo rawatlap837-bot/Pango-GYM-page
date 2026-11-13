@@ -76,6 +76,13 @@ const css = `
   text-wrap: balance;
   letter-spacing: -0.02em;
 }
+.guarantee-section .section-heading h2 {
+  font-family: var(--font-heading) !important;
+  font-size: 25px;
+  font-weight: 400 !important;
+  line-height: 28px;
+  letter-spacing: 0.02em;
+}
 .guarantee-section .guarantee-card p {
   text-wrap: pretty;
   line-height: 1.65;
