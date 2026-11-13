@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { content } from '../content'
 
 const SPEED = 32          // auto-scroll speed in pixels per second
+const VIDEO_SPEED = 20    // slower motion for the larger video cards
 const RESUME_DELAY = 1500 // ms without user activity before auto-scroll restarts
 
 function VideoTestimonialCard({ item, copy }) {
@@ -40,7 +41,7 @@ function VideoTestimonialCard({ item, copy }) {
         <h3>{item.title}</h3>
         <p>{item.caption}</p>
         <a href={item.href} target="_blank" rel="noreferrer" tabIndex={copy === 0 ? 0 : -1}>
-          Open video <span aria-hidden="true">↗</span>
+          Open Video <span aria-hidden="true">↗</span>
         </a>
       </div>
     </article>
@@ -252,7 +253,9 @@ export default function TestimonialCarousel() {
                   tabIndex={copy === 0 ? 0 : -1}
                   aria-label={copy === 0 ? `${item.alt}; open full image` : undefined}
                 >
-                  <img src={item.src} alt={copy === 0 ? item.alt : ''} loading="lazy" decoding="async" />
+                  <span className="proof-image-scroll" aria-label="Scroll testimonial image vertically" tabIndex={copy === 0 ? 0 : -1}>
+                    <img src={item.src} alt={copy === 0 ? item.alt : ''} loading="lazy" decoding="async" />
+                  </span>
               </a>
             ))}
           </div>
@@ -316,9 +319,9 @@ export function VideoTestimonialCarousel() {
       frame = requestAnimationFrame(tick)
       const delta = Math.min(time - (lastTime || time), 50)
       lastTime = time
-      if (!cycle || !active || touch || drag || time < pauseUntil || document.hidden || reducedMotion.matches) return
+      if (!cycle || !active || touch || drag || time < pauseUntil || document.hidden) return
       if (Math.abs(position - viewport.scrollLeft) > 2) position = viewport.scrollLeft
-      position += SPEED * delta / 1000
+      position += VIDEO_SPEED * delta / 1000
       if (position >= cycle * 1.5) position -= cycle
       viewport.scrollLeft = lastWritten = position
     }
