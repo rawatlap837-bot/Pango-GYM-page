@@ -19,20 +19,24 @@
   --color-muted: #756e80;
   --color-soft: #f8f5fc;
   --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: 'Anton', Impact, sans-serif;
+  --font-heading: 'General Sans', sans-serif;
   --font-display: 'Anton', Impact, sans-serif;
 }
 
 /* Global Font Assignments:
-   Main headings use Anton.
-   Subheadings, body copy, and UI text use Manrope. */
+   All headings use General Sans.
+   Body copy and UI text use Manrope. */
 h1, h2, .h1, .h2, .ba-title, .offer-heading, .section-heading h2, .faq-heading h2, .offer-content h2, .proof-gallery-heading h2, .host-card h2, .host-intro h2, .host-section-heading, .gym-logos-heading h2, .guarantee-section .section-heading h2 {
   font-family: var(--font-heading) !important;
   font-weight: 400 !important;
   letter-spacing: 0.03em;
 }
 
-h3, h4, h5, h6, .hero-subtitle, p, span, a, button, summary, input, select, textarea, label {
+h3, h4, h5, h6 {
+  font-family: 'General Sans', sans-serif !important;
+}
+
+.hero-subtitle, p, span, a, button, summary, input, select, textarea, label {
   font-family: var(--font-sans);
 }
 
@@ -49,6 +53,96 @@ h3, h4, h5, h6, .hero-subtitle, p, span, a, button, summary, input, select, text
   main{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
   .mobile-cta{left:0;right:0;width:100%;padding-inline:12px;box-sizing:border-box}
   .mobile-cta .button-primary{display:flex;width:100%;max-width:100%;min-width:0;box-sizing:border-box;white-space:nowrap}
+}
+
+/* One consistent raised gold 3D finish for every CTA. */
+a.button-primary,
+a.nav-cta{
+  border:1px solid rgba(122,82,0,.32)!important;
+  border-bottom:4px solid #bd8e00!important;
+  border-radius:13px!important;
+  background:linear-gradient(180deg,#ffe46b 0%,#f5c928 58%,#eab915 100%)!important;
+  color:#2b1932!important;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.62),inset 0 -2px 0 rgba(135,91,0,.12),0 3px 0 #b88b00,0 10px 18px rgba(31,17,46,.24)!important;
+  transition:transform .18s ease,filter .18s ease,box-shadow .18s ease!important;
+}
+a.button-primary:hover,
+a.nav-cta:hover{
+  background:linear-gradient(180deg,#ffeb85 0%,#ffda45 58%,#f3c321 100%)!important;
+  filter:brightness(1.02);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.72),inset 0 -2px 0 rgba(135,91,0,.12),0 3px 0 #b88b00,0 13px 22px rgba(31,17,46,.3)!important;
+}
+a.button-primary:active,
+a.nav-cta:active{
+  border-bottom-width:2px!important;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.45),0 1px 0 #b88b00,0 4px 9px rgba(31,17,46,.22)!important;
+}
+
+@media(max-width:640px){
+  .hero-topbar{display:flex;align-items:center;justify-content:space-between;gap:28px}
+  .hero-topbar .brand-mark{flex:1 1 auto;min-width:0;gap:8px;font-size:11px}
+  .hero-topbar .brand-mark>.brand-icon{flex:0 0 32px;width:32px;height:32px}
+  .hero-topbar .brand-mark>span:last-child{min-width:0;white-space:nowrap}
+  .hero-topbar>.button-primary{flex:0 0 auto;width:max-content;min-height:40px;margin-left:18px;padding:10px 14px;font-size:12px;white-space:nowrap}
+}
+@media(max-width:360px){
+  .hero-topbar{gap:24px}
+  .hero-topbar .brand-mark{font-size:10px}
+  .hero-topbar .brand-mark small{font-size:6px}
+  .hero-topbar>.button-primary{min-height:38px;padding:9px 11px;font-size:11px}
+}
+
+/* Keep all page headings consistently bold in General Sans. */
+h1,h2,h3,h4,h5,h6,.ba-title{
+  font-weight:800!important;
+}
+
+.hero h1,
+.hero h1 span,
+.section-heading h2,
+.faq-heading h2,
+.offer-heading,
+.offer-content h2,
+.proof-gallery-heading h2,
+.proof-video-heading h3,
+.host-card h2,
+.host-intro .host-section-heading,
+.host-profile-copy h3,
+.gym-logos-heading h2,
+.guarantee-section .section-heading h2,
+.ba-title{
+  font-weight:800!important;
+}
+
+/* Add breathing room to the outcome card copy. */
+.workshop-section .outcome-step-card .step-rule{margin:25px 0 21px!important}
+.workshop-section .outcome-step-card h3{line-height:1.65!important}
+@media(max-width:640px){
+  .workshop-section .outcome-step-card{padding:21px 19px 24px!important}
+  .workshop-section .outcome-step-card .step-rule{margin:20px 0 18px!important}
+  .workshop-section .outcome-step-card h3{line-height:1.7!important}
+  .workshop-section .workshop-bottom p{font-size:clamp(21px,6vw,26px)!important;line-height:1.5!important}
+  .workshop-section .workshop-bottom .button-primary{min-height:58px;padding:14px 24px;font-size:17px!important;gap:12px}
+}
+
+/* General Sans is intentionally limited to the hero headline. */
+.hero h1,
+.hero h1 span{
+  font-family:'General Sans',sans-serif!important;
+  font-weight:700!important;
+}
+
+@media(max-width:640px){
+  .fit-section .section-heading h2{
+    width:100%;
+    max-width:15ch;
+    margin-inline:auto;
+    white-space:normal;
+    overflow-wrap:break-word;
+    font-size:clamp(25px,7.2vw,30px);
+    line-height:1.12;
+    text-wrap:balance;
+  }
 }
 
 /* Palette-led finishing touches: violet stays primary; bright swatches signal action and status. */
@@ -234,7 +328,7 @@ h3, h4, h5, h6, .hero-subtitle, p, span, a, button, summary, input, select, text
 .workshop-section .outcome-step-card .outcome-emphasis{color:#f1c935;font-weight:850;text-decoration:underline;text-decoration-color:#f1c935;text-decoration-thickness:2px;text-underline-offset:4px}
 @media(max-width:640px){.fit-section .pain-item{grid-template-columns:34px minmax(0,1fr) 48px;gap:9px;min-height:76px;padding:13px 11px;border-radius:13px}.fit-section .pain-index{width:31px;height:31px;border-radius:10px;font-size:10px}.fit-section .pain-item p{font-size:15px;line-height:1.5}.fit-section .pain-mark{width:46px;height:46px}.fit-section .pain-mark .pain-line-icon{width:31px;height:31px}.fit-section .fit-transition{margin-top:20px;padding:14px 15px;font-size:13px}.fit-story{margin-top:18px;padding:19px 18px;border-radius:15px}.fit-story p{font-size:14px;line-height:1.7}.fit-story p+p{margin-top:10px}.fit-section .center-action{margin-top:20px}}
 @media(max-width:640px){.workshop-section .outcome-step-card h3{font-size:16px;line-height:1.5}.workshop-section .steps-grid.deck-steps>.outcome-step-card{margin-bottom:12px!important}}
-@media(max-width:640px){.fit-section .section-heading h2{max-width:none;white-space:nowrap;font-size:clamp(23px,7vw,30px);letter-spacing:-.055em}}
+@media(max-width:640px){.fit-section .section-heading h2{width:100%;max-width:100%;white-space:normal;overflow-wrap:normal;text-wrap:balance;font-size:clamp(25px,7.2vw,30px);line-height:1.12;letter-spacing:-.035em}}
 
 /* Normalize display heading tracking so section titles stay easy to read. */
 h1, h2, .h1, .h2, .ba-title, .offer-heading, .section-heading h2,
@@ -247,7 +341,7 @@ h1, h2, .h1, .h2, .ba-title, .offer-heading, .section-heading h2,
 /* This mobile callout uses a short display title; Anton makes it look overly condensed. */
 .fit-section .section-heading h2 {
   font-family: var(--font-heading) !important;
-  font-weight: 400 !important;
+  font-weight: 800 !important;
   letter-spacing: 0.04em;
 }
 

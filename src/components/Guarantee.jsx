@@ -79,7 +79,7 @@ const css = `
 .guarantee-section .section-heading h2 {
   font-family: var(--font-heading) !important;
   font-size: 25px;
-  font-weight: 400 !important;
+  font-weight: 800 !important;
   line-height: 28px;
   letter-spacing: 0.02em;
 }

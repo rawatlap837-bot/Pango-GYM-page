@@ -57,6 +57,21 @@ const HERO_OVERLAY_CSS = `
   position: absolute;
 }
 
+@media (max-width: 640px) {
+  .hero > .hero-topbar {
+    width: calc(100% - 32px);
+    gap: 20px;
+  }
+  .hero > .hero-topbar .brand-mark {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  .hero > .hero-topbar > .button-primary {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+}
+
 /* ---------- Video section ---------- */
 .hero-video {
   width: min(100%, 880px);
@@ -69,7 +84,7 @@ const HERO_OVERLAY_CSS = `
   border-radius: 18px;
   background: #1a0b3d linear-gradient(135deg, #2c1368, #11062b);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 24px 60px rgba(6, 2, 20, 0.55);
+  box-shadow: none;
 }
 .hero-video-thumb {
   position: absolute;
