@@ -273,7 +273,6 @@ export function VideoTestimonialCarousel() {
     const viewport = viewportRef.current
     const track = trackRef.current
     if (!viewport || !track) return
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
     let cycle = 0
     let position = 0
     let lastWritten = 0

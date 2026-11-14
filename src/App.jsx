@@ -6,30 +6,10 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 import { content } from './content'
 import Button from './components/Button'
-import LineIcon from './components/LineIcon'
 import TestimonialCarousel, { VideoTestimonialCarousel } from './components/TestimonialCarousel'
 import Guarantee from './components/Guarantee'
 import { useEffect } from 'react'
 import { animate } from 'animejs'
-
-function emphasizeText(text, phrases = []) {
-  const remaining = text
-  const matches = phrases
-    .map((phrase) => ({ phrase, index: remaining.indexOf(phrase) }))
-    .filter((match) => match.index >= 0)
-    .sort((a, b) => a.index - b.index)
-
-  if (!matches.length) return text
-  const parts = []
-  let cursor = 0
-  matches.forEach(({ phrase, index }) => {
-    if (index < cursor) return
-    parts.push(text.slice(cursor, index), <strong key={`${index}-${phrase}`}>{phrase}</strong>)
-    cursor = index + phrase.length
-  })
-  parts.push(text.slice(cursor))
-  return parts
-}
 
 export default function App() {
   useEffect(() => {

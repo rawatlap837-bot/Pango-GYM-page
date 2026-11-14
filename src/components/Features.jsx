@@ -21,43 +21,43 @@ const THEME = {
 const PAIN_ICONS = [
   // 01 wallet: coin drops in
   <>
-    <circle className="pi-coin-drop pi-accent-fill" cx="24" cy="9" r="4" />
-    <rect x="8" y="16" width="32" height="24" rx="5" />
-    <path d="M8 23h32" />
-    <rect x="29" y="28" width="11" height="7" rx="3.5" className="pi-accent-fill" />
+    <circle key="wallet-coin" className="pi-coin-drop pi-accent-fill" cx="24" cy="9" r="4" />
+    <rect key="wallet-body" x="8" y="16" width="32" height="24" rx="5" />
+    <path key="wallet-line" d="M8 23h32" />
+    <rect key="wallet-card" x="29" y="28" width="11" height="7" rx="3.5" className="pi-accent-fill" />
   </>,
   // 02 coins: bobbing
   <>
     <g className="pi-bob-a">
-      <circle cx="18" cy="29" r="9" />
-      <circle cx="18" cy="29" r="4.5" className="pi-accent" />
+      <circle key="coin-one" cx="18" cy="29" r="9" />
+      <circle key="coin-one-center" cx="18" cy="29" r="4.5" className="pi-accent" />
     </g>
     <g className="pi-bob-b">
-      <circle cx="31" cy="19" r="9" />
-      <circle cx="31" cy="19" r="4.5" className="pi-accent" />
+      <circle key="coin-two" cx="31" cy="19" r="9" />
+      <circle key="coin-two-center" cx="31" cy="19" r="4.5" className="pi-accent" />
     </g>
   </>,
   // 03 growth chart: line draws itself
   <>
-    <path d="M8 8v32h32" />
-    <path className="pi-draw pi-accent" d="M14 32l8-8 6 5 11-14" pathLength="1" />
-    <path className="pi-arrow pi-accent" d="M32 15h7v7" />
+    <path key="chart-axis" d="M8 8v32h32" />
+    <path key="chart-line" className="pi-draw pi-accent" d="M14 32l8-8 6 5 11-14" pathLength="1" />
+    <path key="chart-arrow" className="pi-arrow pi-accent" d="M32 15h7v7" />
   </>,
   // 04 people: ping ring
   <>
-    <circle className="pi-ping pi-accent" cx="34" cy="20" r="5" />
-    <circle cx="20" cy="17" r="6" />
-    <path d="M8 39c0-7 5-12 12-12s12 5 12 12" />
+    <circle key="people-ping" className="pi-ping pi-accent" cx="34" cy="20" r="5" />
+    <circle key="people-one" cx="20" cy="17" r="6" />
+    <path key="people-one-body" d="M8 39c0-7 5-12 12-12s12 5 12 12" />
     <g className="pi-sway">
-      <circle cx="34" cy="20" r="4.5" />
-      <path d="M34 28c5 0 8 4 8 10" />
+      <circle key="people-two" cx="34" cy="20" r="4.5" />
+      <path key="people-two-body" d="M34 28c5 0 8 4 8 10" />
     </g>
   </>,
   // 05 tag: swings
-  <g className="pi-swing">
-    <path d="M10 10h16l14 14-16 16L10 26z" />
-    <circle cx="19" cy="19" r="2.5" className="pi-accent-fill" />
-    <path d="M22 31l9-9" className="pi-accent" />
+  <g key="tag-icon" className="pi-swing">
+    <path key="tag" d="M10 10h16l14 14-16 16L10 26z" />
+    <circle key="tag-hole" cx="19" cy="19" r="2.5" className="pi-accent-fill" />
+    <path key="tag-line" d="M22 31l9-9" className="pi-accent" />
   </g>,
 ]
 

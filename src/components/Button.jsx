@@ -187,7 +187,11 @@ export default function Button({
   return (
     <a
       href={href}
-      onClick={isPlaceholder ? (event) => event.preventDefault() : undefined}
+      onClick={isPlaceholder ? (event) => {
+        // The CTA still has a working destination until a registration URL is configured.
+        event.preventDefault()
+        document.getElementById(content.cta.href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
+      } : undefined}
       onPointerEnter={lift}
       onPointerLeave={rest}
       onPointerDown={press}

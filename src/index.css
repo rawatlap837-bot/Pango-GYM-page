@@ -43,6 +43,14 @@ h3, h4, h5, h6, .hero-subtitle, p, span, a, button, summary, input, select, text
 @media(max-width:360px){.site-width{width:calc(100% - 28px)}.nav-cta{padding-inline:10px;font-size:9px}.hero h1{font-size:39px}.hero-bottom-inner{font-size:5px}.float-chip{font-size:7px}.footer-inner>p{font-size:9px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 
+/* Keep the phone CTA within the viewport and clear page content from it. */
+@media(max-width:640px){
+  html,body,#root{width:100%;max-width:100%;overflow-x:clip}
+  main{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+  .mobile-cta{left:0;right:0;width:100%;padding-inline:12px;box-sizing:border-box}
+  .mobile-cta .button-primary{display:flex;width:100%;max-width:100%;min-width:0;box-sizing:border-box;white-space:nowrap}
+}
+
 /* Palette-led finishing touches: violet stays primary; bright swatches signal action and status. */
 .hero{background:#4b10a0}
 .hero::before{background:radial-gradient(ellipse at 78% 20%,#9946f988,transparent 48%),radial-gradient(ellipse at 2% 90%,#9946f966,transparent 45%),linear-gradient(112deg,#4b10a0 8%,#9946f9 56%,#4b10a0)}
@@ -71,6 +79,7 @@ h3, h4, h5, h6, .hero-subtitle, p, span, a, button, summary, input, select, text
 .hero-subtitle{color:#fff;font-size:17px;line-height:1.75;text-shadow:0 1px 3px #24103880}
 .hero .eyebrow-light{color:#fff}
 .hero-action p{color:#fff;font-size:12px;line-height:1.65;text-shadow:0 1px 3px #24103880}
+.hero-action p{display:inline-flex;align-items:center;gap:8px;width:max-content;max-width:100%;padding:10px 15px;border:1px solid rgba(255,216,77,.72);border-radius:999px;background:linear-gradient(135deg,rgba(255,216,77,.2),rgba(255,255,255,.09));color:#ffe47a;font-size:13px;font-weight:800;line-height:1.25;letter-spacing:.01em;text-shadow:0 1px 4px #241038aa;box-shadow:0 8px 24px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.2)}
 .visual-caption{color:#fff}
 .visual-caption span{color:#eadcff;font-size:9px}
 .visual-caption b{color:#fff;font-size:12px}
