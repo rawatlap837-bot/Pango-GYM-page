@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { content } from '../content'
 import Button from './Button'
 
@@ -7,10 +8,18 @@ const confirmations = [
   'Your seat is reserved once payment is complete',
 ]
 
+const VIDEO_URL = 'https://vimeo.com/1246793875'
+const VIDEO_THUMBNAIL_URL = `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(VIDEO_URL)}&width=1280`
+
 const css = `
 .offer-section .offer-content {
+  position: relative;
+  z-index: 1;
   max-width: 520px;
   margin: 0 auto;
+}
+.offer-section .offer-orbit {
+  pointer-events: none;
 }
 .offer-section .offer-heading {
   margin: 0 auto 24px;
@@ -19,6 +28,51 @@ const css = `
 }
 .offer-section .offer-box {
   margin-top: 0;
+}
+.offer-section .offer-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 0 0 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 14px;
+  background: #160d20;
+  box-shadow: 0 12px 32px rgba(0,0,0,.22);
+}
+.offer-section .offer-video-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background-color: #160d20;
+  background-image: linear-gradient(180deg, rgba(10,4,30,.05), rgba(10,4,30,.35)), var(--offer-video-thumbnail);
+  background-position: center;
+  background-size: cover;
+}
+.offer-section .offer-video-play-icon {
+  display: grid;
+  place-items: center;
+  width: clamp(56px, 9vw, 84px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #f2c92b;
+  color: #1a0b3d;
+  box-shadow: 0 10px 30px rgba(0,0,0,.45);
+}
+.offer-section .offer-video-play-icon svg { width: 44%; height: 44%; }
+.offer-section .offer-video iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 /* Bigger date / bonus lines */
@@ -121,6 +175,20 @@ const css = `
 
 export default function Contact() {
   const { price, date, bonus, reassurance } = content.offer
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+  const [videoThumbnail, setVideoThumbnail] = useState('')
+
+  useEffect(() => {
+    const controller = new AbortController()
+    fetch(VIDEO_THUMBNAIL_URL, { signal: controller.signal })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => {
+        if (data?.thumbnail_url) setVideoThumbnail(data.thumbnail_url)
+      })
+      .catch(() => {})
+
+    return () => controller.abort()
+  }, [])
 
   return (
     <section id="register" className="offer-section section-pad">
@@ -130,6 +198,33 @@ export default function Contact() {
 
       <div className="site-width offer-content">
         <h2 className="offer-heading">Confirm Your Booking Payment</h2>
+
+        <div className="offer-video">
+          {isVideoPlaying ? (
+            <iframe
+              src="https://player.vimeo.com/video/1246793875?autopause=0&amp;player_id=0&amp;app_id=58479&autoplay=1"
+              title="Pango-Authority-Reel-FINAL"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+              playsInline
+            />
+          ) : (
+            <button
+              className="offer-video-play"
+              type="button"
+              onClick={() => setIsVideoPlaying(true)}
+              aria-label="Play Pango Authority video"
+              style={videoThumbnail ? { '--offer-video-thumbnail': `url("${videoThumbnail}")` } : undefined}
+            >
+              <span className="offer-video-play-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="8 5 8 19 19 12" strokeLinejoin="round" stroke="currentColor" strokeWidth="1.5" />
+                </svg>
+              </span>
+            </button>
+          )}
+        </div>
 
         <div className="offer-box">
           <div className="offer-box-top">
