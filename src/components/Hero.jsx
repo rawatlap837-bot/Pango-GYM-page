@@ -84,8 +84,6 @@ const HERO_OVERLAY_CSS = `
   padding: 12px 18px;
   text-align: center;
 }
-.hero-action-below-video .button-primary { min-height: 56px; padding-inline: 30px; font-size: 30px; }
-.hero-action-below-video .button-primary .button-label { font-size: 18px !important; }
 .hero-action-below-video p { max-width: none; margin: 0; }
 @media (max-width: 640px) {
   .hero-action-below-video {
@@ -95,8 +93,7 @@ const HERO_OVERLAY_CSS = `
     margin-bottom: 22px;
     padding: 16px 12px;
   }
-  .hero-action-below-video .button-primary { width: min(100%, 420px); min-height: 58px; padding-inline: 10px; font-size: 15px !important; }
-  .hero-action-below-video .button-primary .button-label { font-size: 15px !important; white-space: nowrap; }
+  .hero-action-below-video .button-primary { width: min(100%, 420px); }
   .hero-action-below-video p { font-size: 13px; }
 }
 .hero-subtitle {
@@ -119,10 +116,6 @@ const HERO_OVERLAY_CSS = `
   height: 100%;
   border: 0;
   background: #000;
-}
-.mobile-cta .mobile-cta-button .button-label { font-size: 16px !important; white-space: nowrap; }
-@media (max-width: 360px) {
-  .mobile-cta .mobile-cta-button .button-label { font-size: 15px !important; }
 }
 `
 

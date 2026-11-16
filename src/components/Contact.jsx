@@ -178,7 +178,7 @@ export default function Contact() {
         <p className="offer-redirect">
           <span className="offer-redirect-icon" aria-hidden="true">↗</span>
           <span>
-            You’ll be redirected to the <strong>Workshop Registration Page</strong>
+            A quick <strong>registration form</strong> will open for your details
           </span>
         </p>
       </div>

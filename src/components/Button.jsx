@@ -1,23 +1,30 @@
-import { useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { content } from '../content'
 import { animate } from 'animejs'
+import RegistrationContext from '../RegistrationContext'
 
 /* ---------- Styles (injected once, no separate CSS file needed) ---------- */
 const STYLES = `
-a.button-primary {
+:is(a, button).button-primary {
+  --button-label-size: 1.25rem;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  padding: 1rem 1.9rem;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  /* Keep section-specific rules from shrinking the shared CTA sizing. */
+  min-height: 64px !important;
+  padding: 1rem 1.5rem !important;
   border-radius: 0.8rem;
   background: linear-gradient(180deg, #ffd84d 0%, #f2c230 100%);
   color: #2a0f5c;
-  font-weight: 700;
-  font-size: 1.05rem;
+  font-weight: 800;
+  font-size: var(--button-label-size) !important;
   letter-spacing: 0.01em;
-  line-height: 1;
+  line-height: 1.25;
   text-decoration: none;
   cursor: pointer;
   user-select: none;
@@ -29,7 +36,7 @@ a.button-primary {
     0 2px 6px rgba(20, 0, 60, 0.35);
   transition: filter 0.2s ease, box-shadow 0.2s ease;
 }
-a.button-primary:hover {
+:is(a, button).button-primary:hover {
   filter: brightness(1.05);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.6),
@@ -37,7 +44,7 @@ a.button-primary:hover {
     0 16px 32px -8px rgba(250, 204, 21, 0.7),
     0 4px 10px rgba(20, 0, 60, 0.4);
 }
-a.button-primary:focus-visible {
+:is(a, button).button-primary:focus-visible {
   outline: 3px solid #fff;
   outline-offset: 3px;
 }
@@ -74,22 +81,25 @@ a.button-primary:focus-visible {
   z-index: 1;
   display: inline-flex;
 }
-a.button-primary .button-label {
+:is(a, button).button-primary .button-label {
+  display: block;
   min-width: 0;
   flex: 0 1 auto;
-  white-space: nowrap;
+  white-space: normal;
   text-align: center;
-  line-height: 1.2;
+  text-wrap: balance;
+  line-height: 1.25;
   overflow-wrap: normal;
-  font-size: inherit;
+  font-size: var(--button-label-size);
 }
 .button-arrow { flex: 0 0 auto; }
-@media (max-width: 360px) {
-  a.button-primary { gap: .3rem; padding: .75rem .45rem; font-size: .7rem; }
-}
 @media (max-width: 640px) {
-  a.button-primary { width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; gap: .4rem; padding: .8rem .55rem; font-size: clamp(.7rem, 3.35vw, .85rem) !important; line-height: 1; }
-  a.button-primary .button-label { flex: 0 1 auto; white-space: nowrap; }
+  :is(a, button).button-primary {
+    --button-label-size: 0.9rem;
+    width: 100%;
+    gap: .4rem;
+    padding: 1rem !important;
+  }
 }
 `
 
@@ -122,7 +132,7 @@ export default function Button({
   href = content.cta.href,
   children = content.cta.label,
   className = '',
-  arrow = true,
+  arrow = false,
   glow = '250, 204, 21', // RGB of the pulse ring (yellow)
 }) {
   const ringRef = useRef(null)
@@ -130,7 +140,9 @@ export default function Button({
   const arrowRef = useRef(null)
   const loopsRef = useRef([])
 
-  const isPlaceholder = href === content.offer?.linkPlaceholder
+  const registration = useContext(RegistrationContext)
+  const opensRegistration = Boolean(registration && (href === content.cta.href || href === content.offer?.linkPlaceholder))
+  const Element = opensRegistration ? 'button' : 'a'
 
   // Remove a trailing "→" from the label, the component adds its own arrow
   const label =
@@ -202,13 +214,10 @@ export default function Button({
   }
 
   return (
-    <a
-      href={href}
-      onClick={isPlaceholder ? (event) => {
-        // The CTA still has a working destination until a registration URL is configured.
-        event.preventDefault()
-        document.getElementById(content.cta.href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
-      } : undefined}
+    <Element
+      type={opensRegistration ? 'button' : undefined}
+      href={opensRegistration ? undefined : href}
+      onClick={opensRegistration ? registration.open : undefined}
       onPointerEnter={lift}
       onPointerLeave={rest}
       onPointerDown={press}
@@ -216,7 +225,7 @@ export default function Button({
       onPointerCancel={rest}
       onFocus={focusLift}
       onBlur={rest}
-      aria-label={isPlaceholder ? `${label} (Registration Link To Be Added)` : undefined}
+      aria-haspopup={opensRegistration ? 'dialog' : undefined}
       className={`button-primary ${className}`}
     >
       {/* Pulse ring */}
@@ -228,11 +237,11 @@ export default function Button({
       </span>
 
       <span className="button-label">{label}</span>
-      {false && arrow && (
+      {arrow && (
         <span ref={arrowRef} className="button-arrow">
           <ArrowIcon />
         </span>
       )}
-    </a>
+    </Element>
   )
 }
