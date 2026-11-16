@@ -2,6 +2,7 @@ import { content } from '../content'
 import Button from './Button'
 import GymLogoCarousel from './GymLogoCarousel'
 import HeroAtmosphere from './HeroAtmosphere'
+import { useRef, useState } from 'react'
 
 /* Vimeo: https://vimeo.com/1246565018/4f1007867d
    The part after the video ID is the privacy hash, passed as ?h= in the embed URL. */
@@ -73,7 +74,7 @@ const HERO_OVERLAY_CSS = `
   gap: 12px;
   margin: 0 0 12px;
   color: #ffe47a;
-  font-size: 16px;
+  font-size: clamp(20px, 1.8vw, 26px);
   font-weight: 800;
   font-family: cursive;
   text-transform: capitalize;
@@ -149,11 +150,51 @@ const HERO_OVERLAY_CSS = `
   border: 0;
   background: #000;
 }
+.hero-unmute-overlay {
+  position: absolute;
+  z-index: 2;
+  inset: 7% 9%;
+  display: flex;
+  width: 82%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: auto;
+  padding: 22px;
+  border: 3px solid #fff;
+  border-radius: 24px;
+  background: rgba(247, 91, 68, 0.76);
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 0 0 8px rgba(247, 91, 68, 0.38);
+}
+.hero-unmute-overlay:hover { background: rgba(247, 91, 68, 0.84); }
+.hero-unmute-icon { width: 76px; height: 76px; }
+.hero-unmute-title { font-size: clamp(20px, 3vw, 34px); font-weight: 850; line-height: 1.15; }
+.hero-unmute-action { font-size: clamp(17px, 2.4vw, 28px); font-weight: 850; line-height: 1.2; }
+@media (max-width: 640px) {
+  .hero-video-prompt { font-size: 16px; }
+  .hero-unmute-overlay { inset: 6%; width: 88%; gap: 8px; padding: 12px; border-radius: 18px; }
+  .hero-unmute-icon { width: 52px; height: 52px; }
+  .hero-unmute-title { font-size: 20px; }
+  .hero-unmute-action { font-size: 18px; }
+}
 `
 
 export default function Hero() {
+  const videoFrameRef = useRef(null)
+  const [showUnmuteOverlay, setShowUnmuteOverlay] = useState(true)
   const { eyebrow, headline, highlight, subheadline, note } = content.hero
   const parts = headline.split(highlight)
+  const unmuteVideo = () => {
+    videoFrameRef.current?.contentWindow?.postMessage(
+      { method: 'setVolume', value: 1 },
+      'https://player.vimeo.com'
+    )
+    setShowUnmuteOverlay(false)
+  }
 
   return (
     <section className="hero" id="top">
@@ -181,12 +222,22 @@ export default function Hero() {
           <div className="hero-video-frame">
             <iframe
               className="hero-video-iframe"
+              ref={videoFrameRef}
               src={VIDEO_SRC}
               title="Growth call video"
               loading="eager"
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
             />
+            {showUnmuteOverlay && (
+              <button className="hero-unmute-overlay" type="button" onClick={unmuteVideo}>
+                <svg className="hero-unmute-icon" viewBox="0 0 64 64" aria-hidden="true">
+                  <path fill="currentColor" d="M8 24v16h12l16 13V11L20 24H8Zm36-4v5c5 2 8 6 8 11s-3 9-8 11v5c8-2 13-8 13-16S52 22 44 20Zm0 10v12c3-1 5-3 5-6s-2-5-5-6Z" />
+                </svg>
+                <span className="hero-unmute-title">Your Video Is Playing</span>
+                <span className="hero-unmute-action">Click To Unmute</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
