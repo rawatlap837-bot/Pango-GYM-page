@@ -66,6 +66,38 @@ const HERO_OVERLAY_CSS = `
 }
 
 /* ---------- Video section ---------- */
+.hero-video-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 0 12px;
+  color: #ffe47a;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: cursive;
+  text-transform: capitalize;
+  text-align: center;
+}
+.hero-video-arrow {
+  display: inline-flex;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 28px;
+  color: #ffe47a;
+  animation: hero-prompt-arrow 0.8s ease-in-out infinite alternate;
+}
+.hero-video-arrow:last-child {
+  animation-delay: 0.2s;
+}
+.hero-video-arrow svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 5px #ffe47a66);
+}
+@keyframes hero-prompt-arrow {
+  to { transform: translateY(5px); }
+}
 .hero-video {
   width: min(100%, 880px);
   margin-inline: auto;
@@ -74,7 +106,7 @@ const HERO_OVERLAY_CSS = `
   position: relative;
   z-index: 2;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
@@ -84,7 +116,7 @@ const HERO_OVERLAY_CSS = `
   padding: 12px 18px;
   text-align: center;
 }
-.hero-action-below-video p { max-width: none; margin: 0; }
+.hero-action-below-video p { max-width: none; margin: 0; font-size: 16px; }
 @media (max-width: 640px) {
   .hero-action-below-video {
     flex-direction: column;
@@ -141,6 +173,11 @@ export default function Hero() {
         </div>
 
         <div className="hero-video">
+          <p className="hero-video-prompt">
+            <span className="hero-video-arrow" aria-hidden="true"><svg viewBox="0 0 24 32"><path d="M12 2v23M4 17l8 8 8-8" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
+            Click Below To Watch First
+            <span className="hero-video-arrow" aria-hidden="true"><svg viewBox="0 0 24 32"><path d="M12 2v23M4 17l8 8 8-8" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
+          </p>
           <div className="hero-video-frame">
             <iframe
               className="hero-video-iframe"

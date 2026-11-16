@@ -50,7 +50,6 @@ h3, h4, h5, h6 {
 /* Keep the phone CTA within the viewport and clear page content from it. */
 @media(max-width:640px){
   html,body,#root{width:100%;max-width:100%;overflow-x:clip}
-  main{padding-bottom:calc(112px + env(safe-area-inset-bottom))}
   .mobile-cta{left:0;right:0;width:100%;padding-inline:12px;box-sizing:border-box}
   .mobile-cta .button-primary{display:flex;width:100%;max-width:100%;min-width:0;min-height:60px;box-sizing:border-box;white-space:nowrap;font-size:16px!important}
 }
@@ -735,9 +734,9 @@ a:focus-visible,summary:focus-visible{outline-color:#0000ee}
 .host-proof-points b{color:#4b10a0;font-size:clamp(25px,3vw,36px);font-weight:850;line-height:1.1}
 .host-proof-points span{min-height:92px;padding:12px;border-radius:18px;font-size:14px}
 .host-proof-points b{font-size:clamp(22px,2.6vw,32px)}
-.host-profile-copy>.button-primary{width:min(100%,520px);min-height:58px;padding:14px 24px;border-radius:999px;background:#f1c935;color:#25162e;font-size:clamp(12px,3vw,14px);box-shadow:0 10px 26px #f1c9353d}
+.host-profile-copy>.button-primary,.host-card>.button-primary{width:min(100%,520px);min-height:58px;padding:14px 24px;border-radius:999px;background:#f1c935;color:#25162e;font-size:clamp(12px,3vw,14px);box-shadow:0 10px 26px #f1c9353d}
 @media(min-width:641px){.host-card{display:grid;grid-template-columns:minmax(300px,.82fr) minmax(0,1.18fr);grid-template-areas:"portrait intro" "portrait profile";column-gap:clamp(36px,6vw,88px);row-gap:14px;align-items:center;text-align:left}.host-intro{grid-area:intro;text-align:left}.host-intro .host-section-heading{margin:0 0 8px;text-align:left}.host-portrait-wrap{grid-area:portrait;width:100%;height:clamp(390px,42vw,520px);align-self:center;margin:0}.host-card .host-avatar{width:100%;height:100%!important;max-height:none;justify-self:start;object-position:center bottom}.host-profile-copy{grid-area:profile;align-items:flex-start;text-align:left}.host-profile-copy h3{font-size:clamp(38px,4vw,56px)}.host-role{font-size:clamp(14px,1.5vw,20px)}.host-card .host-bio{margin:20px 0 24px;text-align:left}.host-proof-points{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 24px}.host-proof-points span{min-height:100px;padding:12px 8px;font-size:13px}.host-proof-points b{font-size:clamp(20px,2.2vw,30px)}}
-@media(max-width:640px){.host-card{gap:15px;padding:0}.host-intro .host-section-heading{margin:0 auto 12px;font-size:clamp(23px,7vw,29px)}.host-portrait-wrap{width:min(100%,390px);height:min(105vw,410px);margin-top:0}.host-card .host-avatar{width:100%;height:100%!important;object-fit:contain}.host-profile-copy h3{font-size:clamp(31px,9vw,42px)}.host-role{max-width:100%;padding:8px 13px;font-size:14px}.host-card .host-bio{margin:17px auto 20px;font-size:17px}.host-proof-points{gap:8px;margin-bottom:22px}.host-proof-points span{min-height:80px;padding:8px 5px;border-radius:14px;font-size:10px}.host-proof-points b{font-size:20px}.host-profile-copy>.button-primary{min-height:52px;padding-inline:22px;font-size:clamp(13px,4vw,16px)!important}}
+@media(max-width:640px){.host-card{gap:15px;padding:0}.host-intro .host-section-heading{margin:0 auto 12px;font-size:clamp(23px,7vw,29px)}.host-portrait-wrap{width:min(100%,390px);height:min(105vw,410px);margin-top:0}.host-card .host-avatar{width:100%;height:100%!important;object-fit:contain}.host-profile-copy h3{font-size:clamp(31px,9vw,42px)}.host-role{max-width:100%;padding:8px 13px;font-size:14px}.host-card .host-bio{margin:17px auto 20px;font-size:17px}.host-proof-points{gap:8px;margin-bottom:22px}.host-proof-points span{min-height:80px;padding:8px 5px;border-radius:14px;font-size:10px}.host-proof-points b{font-size:20px}.host-card>.button-primary{min-height:52px;padding-inline:22px;font-size:clamp(13px,4vw,16px)!important}}
 
 /* Keep main section titles consistent while allowing longer titles to wrap. */
 @media (max-width: 640px) {
@@ -760,4 +759,22 @@ a:focus-visible,summary:focus-visible{outline-color:#0000ee}
   .workshop-section .step-rule{margin:15px 0!important}
   .workshop-section .step-card p{font-size:14px;line-height:1.6}
   .site-footer{padding-bottom:calc(112px + env(safe-area-inset-bottom))}
+}
+@media(min-width:901px){
+  .workshop-section .workshop-bottom{flex-direction:column;gap:20px;text-align:center}
+}
+@media(min-width:641px){
+  .host-card>.button-primary{grid-column:1/-1;justify-self:center}
+}
+
+.footer-inner .brand-mark{color:#fff;font-size:20px}
+.footer-inner .brand-mark small{color:#c9bdd4;font-size:12px;letter-spacing:.12em}
+.footer-inner>p,.footer-inner>a:last-child{color:#e0d7e8;font-size:14px}
+.footer-bottom{color:#b9aec5;font-size:11px;letter-spacing:.1em}
+@media(max-width:640px){
+  .footer-inner .brand-mark{font-size:clamp(15px,4.3vw,18px)}
+  .footer-inner .brand-mark small{font-size:9px;letter-spacing:.1em}
+  .footer-inner>p{font-size:13px;line-height:1.5}
+  .footer-inner>a:last-child{font-size:13px}
+  .footer-bottom{flex-direction:column;align-items:center;gap:8px;font-size:10px;letter-spacing:.08em;text-align:center}
 }
