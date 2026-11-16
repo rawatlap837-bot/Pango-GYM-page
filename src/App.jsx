@@ -8,6 +8,7 @@ import { content } from './content'
 import Button from './components/Button'
 import TestimonialCarousel, { VideoTestimonialCarousel } from './components/TestimonialCarousel'
 import Guarantee from './components/Guarantee'
+import MentorVideo from './components/MentorVideo'
 import { useEffect } from 'react'
 import { animate } from 'animejs'
 
@@ -85,6 +86,7 @@ export default function App() {
               <span className="host-role">Gym Growth Mentor &amp; Business Strategist</span>
               <p className="host-bio">{content.about.bio.map((part, index) => part.highlight ? <strong className="host-bio-highlight" key={index}>{part.text}</strong> : <span key={index}>{part.text}</span>)}</p>
               <div className="host-proof-points"><span><b>20+</b> Years Experience</span><span><b>1000s</b> Gym Businesses</span><span><b>Growth</b> Focused Strategies</span></div>
+              <MentorVideo />
               <Button href={content.cta.href}>{content.cta.label}</Button>
             </div>
           </div>
@@ -96,7 +98,7 @@ export default function App() {
         <Faq />
       </main>
       <Footer />
-      <div className="mobile-cta"><Button href={content.cta.href}>{content.cta.label}</Button></div>
+      <div className="mobile-cta"><Button className="mobile-cta-button" href={content.cta.href}>{content.cta.label}</Button></div>
     </>
   )
 }

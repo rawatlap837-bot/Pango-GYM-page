@@ -6,7 +6,7 @@ export const content = {
     { label: 'About', href: '#about' },
     { label: 'FAQs', href: '#faq' },
   ],
-  cta: { label: 'Reserve My Seat', navLabel: 'Book Now', href: '#register' },
+  cta: { label: 'Yes, I Want To Double My Gym Profit', navLabel: 'Yes, I Want To Double My Gym Profit', href: '#register' },
   gymLogos: {
     eyebrow: 'Gym Community',
     title: 'A Look At Gyms Around The Community',
@@ -125,7 +125,7 @@ export const content = {
       'Finally Afford The Things You\'ve Always Dreamed Of.',
     ],
     closing: 'If This Is The Kind Of Gym Business We Build For You',
-    ctaLabel: 'Book A Call',
+    ctaLabel: 'Yes, I Want To Double My Gym Profit',
   },
   proof: {
     title: 'See What Other Gym Owners Say About Us',

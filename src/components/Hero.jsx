@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { content } from '../content'
 import Button from './Button'
 import GymLogoCarousel from './GymLogoCarousel'
@@ -6,15 +5,9 @@ import HeroAtmosphere from './HeroAtmosphere'
 
 /* Vimeo: https://vimeo.com/1246565018/4f1007867d
    The part after the video ID is the privacy hash, passed as ?h= in the embed URL. */
-const VIMEO_URL = 'https://vimeo.com/1246565018/4f1007867d'
 const VIMEO_ID = '1246565018'
 const VIMEO_HASH = '4f1007867d'
-const VIDEO_SRC = `https://player.vimeo.com/video/${VIMEO_ID}?h=${VIMEO_HASH}&autoplay=1&title=0&byline=0&portrait=0&dnt=1`
-const OEMBED_URL = `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(VIMEO_URL)}&width=1280`
-
-/* Optional: put your own thumbnail here (e.g. '/video-thumbnail.jpg' from /public).
-   If left empty, the thumbnail is loaded automatically from Vimeo. */
-const CUSTOM_THUMBNAIL = ''
+const VIDEO_SRC = `https://player.vimeo.com/video/${VIMEO_ID}?h=${VIMEO_HASH}&autoplay=1&muted=1&playsinline=1&title=0&byline=0&portrait=0&dnt=1`
 
 /* ================================================================
    Overlay styles. Edit the variables in the first block.
@@ -77,6 +70,39 @@ const HERO_OVERLAY_CSS = `
   width: min(100%, 880px);
   margin-inline: auto;
 }
+.hero-action-below-video {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: min(100% - 36px, 880px);
+  margin: 0 auto 28px;
+  padding: 12px 18px;
+  text-align: center;
+}
+.hero-action-below-video .button-primary { min-height: 56px; padding-inline: 30px; font-size: 30px; }
+.hero-action-below-video .button-primary .button-label { font-size: 18px !important; }
+.hero-action-below-video p { max-width: none; margin: 0; }
+@media (max-width: 640px) {
+  .hero-action-below-video {
+    flex-direction: column;
+    gap: 11px;
+    width: calc(100% - 32px);
+    margin-bottom: 22px;
+    padding: 16px 12px;
+  }
+  .hero-action-below-video .button-primary { width: min(100%, 420px); min-height: 58px; padding-inline: 10px; font-size: 15px !important; }
+  .hero-action-below-video .button-primary .button-label { font-size: 15px !important; white-space: nowrap; }
+  .hero-action-below-video p { font-size: 13px; }
+}
+.hero-subtitle {
+  color: #fff;
+  font-weight: 600;
+}
 .hero-video-frame {
   position: relative;
   aspect-ratio: 16 / 9;
@@ -86,39 +112,6 @@ const HERO_OVERLAY_CSS = `
   border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: none;
 }
-.hero-video-thumb {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.hero-video-play {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  border: 0;
-  cursor: pointer;
-  background: linear-gradient(180deg, rgba(10, 4, 30, 0.05), rgba(10, 4, 30, 0.35));
-}
-.hero-video-play-icon {
-  display: grid;
-  place-items: center;
-  width: clamp(56px, 9vw, 84px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: #f2c92b;
-  color: #1a0b3d;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-  transition: transform 0.2s ease;
-}
-.hero-video-play:hover .hero-video-play-icon { transform: scale(1.08); }
-.hero-video-play:focus-visible { outline: 3px solid #fff; outline-offset: -6px; }
-.hero-video-play-icon svg { display: block; width: 44%; height: 44%; }
 .hero-video-iframe {
   position: absolute;
   inset: 0;
@@ -127,27 +120,15 @@ const HERO_OVERLAY_CSS = `
   border: 0;
   background: #000;
 }
-@media (prefers-reduced-motion: reduce) {
-  .hero-video-play-icon { transition: none; }
+.mobile-cta .mobile-cta-button .button-label { font-size: 16px !important; white-space: nowrap; }
+@media (max-width: 360px) {
+  .mobile-cta .mobile-cta-button .button-label { font-size: 15px !important; }
 }
 `
 
 export default function Hero() {
   const { eyebrow, headline, highlight, subheadline, note } = content.hero
   const parts = headline.split(highlight)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [thumbnail, setThumbnail] = useState(CUSTOM_THUMBNAIL)
-
-  // Load the thumbnail from Vimeo unless a custom one is set
-  useEffect(() => {
-    if (CUSTOM_THUMBNAIL) return
-    const controller = new AbortController()
-    fetch(OEMBED_URL, { signal: controller.signal })
-      .then((res) => (res.ok ? res.json() : Promise.reject(new Error('oEmbed failed'))))
-      .then((data) => setThumbnail(data.thumbnail_url || ''))
-      .catch(() => { }) // falls back to the purple gradient
-    return () => controller.abort()
-  }, [])
 
   return (
     <section className="hero" id="top">
@@ -156,13 +137,6 @@ export default function Hero() {
       <HeroAtmosphere />
       <div className="hero-overlay" aria-hidden="true" />
 
-      <div className="site-width hero-topbar">
-        <a href="#top" className="brand-mark">
-          <span className="brand-icon" aria-hidden="true">G</span>
-          <span>{content.brand}<small>WITH AZHAR ALI SAYED</small></span>
-        </a>
-        <Button href={content.cta.href} arrow={false}>{content.cta.navLabel}</Button>
-      </div>
       <div className="hero-glow" aria-hidden="true" />
       <div className="hero-decoration hero-decoration-one" aria-hidden="true" />
       <div className="hero-decoration hero-decoration-two" aria-hidden="true" />
@@ -171,45 +145,26 @@ export default function Hero() {
           <span className="eyebrow eyebrow-light"><i />{eyebrow}</span>
           <h1>{parts[0]}<span>{highlight}</span>{parts[1]}</h1>
           <p className="hero-subtitle">{subheadline}</p>
-          <div className="hero-action">
-            <Button href={content.cta.href}>{content.cta.label}</Button>
-            <p>{note}</p>
-          </div>
         </div>
 
         <div className="hero-video">
           <div className="hero-video-frame">
-            {isPlaying ? (
-              <iframe
-                className="hero-video-iframe"
-                src={VIDEO_SRC}
-                title="Growth call video"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-              />
-            ) : (
-              <>
-                {thumbnail && (
-                  <img className="hero-video-thumb" src={thumbnail} alt="" loading="eager" decoding="async" />
-                )}
-                <button
-                  type="button"
-                  className="hero-video-play"
-                  onClick={() => setIsPlaying(true)}
-                  aria-label="Play growth call video"
-                >
-                  <span className="hero-video-play-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="8 5 8 19 19 12" strokeLinejoin="round" stroke="currentColor" strokeWidth="1.5" />
-                    </svg>
-                  </span>
-                </button>
-              </>
-            )}
+            <iframe
+              className="hero-video-iframe"
+              src={VIDEO_SRC}
+              title="Growth call video"
+              loading="eager"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+            />
           </div>
         </div>
       </div>
 
+      <div className="hero-action hero-action-below-video">
+        <Button href={content.cta.href}>{content.cta.label}</Button>
+        <p>{note}</p>
+      </div>
       <div className="hero-logos">
         <GymLogoCarousel />
       </div>

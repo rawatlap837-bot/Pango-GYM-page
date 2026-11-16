@@ -5,6 +5,8 @@ const SPEED = 32          // auto-scroll speed in pixels per second
 const VIDEO_SPEED = SPEED // keep video testimonials moving at the same pace as image testimonials
 const RESUME_DELAY = 1500 // ms without user activity before auto-scroll restarts
 const ACTIVE_COPY = 1     // the middle copy is the "real" one: it is interactive and visible on load
+const MOBILE_QUERY = '(max-width: 640px)'
+const MOBILE_GRID_COUNT = 9
 
 /* ---------- desktop layout (PC only) ---------- */
 const DESKTOP_MIN_WIDTH = 1024 // px - at or above this width the cards-per-view rule applies
@@ -13,7 +15,7 @@ const VIDEOS_PER_VIEW = 3      // video testimonials visible at once on PC
 const CARD_GAP = 24            // px between cards on PC
 
 // Each card gets an equal share of the carousel width, so exactly N cards fit on screen.
-// Below DESKTOP_MIN_WIDTH nothing here applies, so phones/tablets keep your existing CSS.
+// Phones use a separate image grid; tablets keep the existing carousel card widths.
 const CARD_WIDTH = 'calc((100cqw - (var(--proof-cards) - 1) * var(--proof-gap)) / var(--proof-cards))'
 const LAYOUT_CSS = `
 @media (min-width: ${DESKTOP_MIN_WIDTH}px) {
@@ -49,6 +51,53 @@ const LAYOUT_CSS = `
     min-width: 0;
     max-width: none;
   }
+}
+`
+
+const MOBILE_GRID_CSS = `
+.proof-mobile-testimonials { width: 100%; min-width: 0; }
+.proof-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.proof-grid-card {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  padding: 2px;
+  border: 1px solid #ffffff38;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #ffffff24, #ffffff0c);
+}
+.proof-grid-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  border-radius: 6px;
+}
+.proof-grid-toggle {
+  display: block;
+  min-height: 44px;
+  margin: 16px auto 0;
+  padding: 10px 18px;
+  border: 1px solid #f1c93580;
+  border-radius: 10px;
+  background: #ffffff0d;
+  color: #f1c935;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.proof-grid-card:focus-visible,
+.proof-grid-toggle:focus-visible {
+  outline: 2px solid #f1c935;
+  outline-offset: 3px;
 }
 `
 
@@ -308,33 +357,31 @@ function VideoTestimonialCard({ item, interactive }) {
             src={item.embed}
             title={item.title}
             loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            sandbox="allow-scripts allow-same-origin allow-presentation"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
             tabIndex={tab}
           />
         ) : (
-          <a
+          <button
+            type="button"
             className="proof-video-preview"
             data-platform={item.platform === 'YouTube' ? 'youtube' : 'instagram'}
-            href={item.href}
-            onClick={(event) => { event.preventDefault(); setPlayerLoaded(true) }}
+            onClick={() => setPlayerLoaded(true)}
             tabIndex={tab}
             aria-label={`Play ${item.title}`}
           >
             {item.thumbnail && <img src={item.thumbnail} alt="" loading="lazy" decoding="async" />}
             <span className="proof-video-play" aria-hidden="true">▶</span>
             <span className="proof-video-preview-platform">{item.platform}</span>
-          </a>
+          </button>
         )}
       </div>
       <div className="proof-video-copy">
         <span>{item.platform}</span>
         <h3>{item.title}</h3>
         <p>{item.caption}</p>
-        <a href={item.href} target="_blank" rel="noreferrer" tabIndex={tab}>
-          Open Video <span aria-hidden="true">↗</span>
-        </a>
       </div>
     </article>
   )
@@ -344,6 +391,59 @@ function VideoTestimonialCard({ item, interactive }) {
 /*  Image testimonials                                                 */
 /* ------------------------------------------------------------------ */
 export default function TestimonialCarousel() {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia(MOBILE_QUERY).matches,
+  )
+
+  useEffect(() => {
+    const media = window.matchMedia(MOBILE_QUERY)
+    const updateLayout = () => setIsMobile(media.matches)
+    updateLayout()
+    media.addEventListener('change', updateLayout)
+    return () => media.removeEventListener('change', updateLayout)
+  }, [])
+
+  return isMobile ? <MobileTestimonialGrid /> : <ImageTestimonialCarousel />
+}
+
+function MobileTestimonialGrid() {
+  const [showAll, setShowAll] = useState(false)
+  const items = showAll ? content.proof.items : content.proof.items.slice(0, MOBILE_GRID_COUNT)
+  const remaining = content.proof.items.length - MOBILE_GRID_COUNT
+
+  return (
+    <div className="proof-mobile-testimonials">
+      <style>{MOBILE_GRID_CSS}</style>
+      <div className="proof-image-grid" id="mobile-testimonial-grid" role="group" aria-label="Gym owner testimonials">
+        {items.map((item) => (
+          <a
+            className="proof-grid-card"
+            href={item.src}
+            target="_blank"
+            rel="noreferrer"
+            key={item.src}
+            aria-label={`${item.alt}; open full image`}
+          >
+            <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+          </a>
+        ))}
+      </div>
+      {remaining > 0 && (
+        <button
+          className="proof-grid-toggle"
+          type="button"
+          aria-expanded={showAll}
+          aria-controls="mobile-testimonial-grid"
+          onClick={() => setShowAll((current) => !current)}
+        >
+          {showAll ? 'Show Fewer Testimonials' : `Show ${remaining} More Testimonials`}
+        </button>
+      )}
+    </div>
+  )
+}
+
+function ImageTestimonialCarousel() {
   const { viewportRef, trackRef, copies } = useAutoScroll({
     speed: SPEED,
     pauseOnHover: false,

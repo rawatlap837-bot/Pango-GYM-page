@@ -74,13 +74,30 @@ a.button-primary:focus-visible {
   z-index: 1;
   display: inline-flex;
 }
+a.button-primary .button-label {
+  min-width: 0;
+  flex: 0 1 auto;
+  white-space: nowrap;
+  text-align: center;
+  line-height: 1.2;
+  overflow-wrap: normal;
+  font-size: inherit;
+}
+.button-arrow { flex: 0 0 auto; }
+@media (max-width: 360px) {
+  a.button-primary { gap: .3rem; padding: .75rem .45rem; font-size: .7rem; }
+}
+@media (max-width: 640px) {
+  a.button-primary { width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; gap: .4rem; padding: .8rem .55rem; font-size: clamp(.7rem, 3.35vw, .85rem) !important; line-height: 1; }
+  a.button-primary .button-label { flex: 0 1 auto; white-space: nowrap; }
+}
 `
 
-if (typeof document !== 'undefined' && !document.getElementById('button-primary-styles')) {
-  const tag = document.createElement('style')
+if (typeof document !== 'undefined') {
+  const tag = document.getElementById('button-primary-styles') ?? document.createElement('style')
   tag.id = 'button-primary-styles'
   tag.textContent = STYLES
-  document.head.appendChild(tag)
+  if (!tag.isConnected) document.head.appendChild(tag)
 }
 
 /* ---------- Helpers ---------- */
@@ -211,7 +228,7 @@ export default function Button({
       </span>
 
       <span className="button-label">{label}</span>
-      {arrow && (
+      {false && arrow && (
         <span ref={arrowRef} className="button-arrow">
           <ArrowIcon />
         </span>
