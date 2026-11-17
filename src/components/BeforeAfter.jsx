@@ -163,7 +163,7 @@ const CSS = `
 
 /* ---------- heading ---------- */
 .ba-head { text-align: center; }
-.ba-title { margin: 0 0 8px; font-size: clamp(28px, 6.5vw, 44px); line-height: 1.12; font-weight: 800; text-wrap: balance; }
+.ba-title { margin: 0 0 8px; font-size: clamp(28px, 6.5vw, 44px); line-height: 1.25; font-weight: 800; letter-spacing: normal; text-wrap: balance; }
 .ba-sub { margin: 0 auto; max-width: 480px; color: rgba(255,255,255,.75); font-size: 15px; line-height: 1.5; }
 
 /* ---------- chart ---------- */

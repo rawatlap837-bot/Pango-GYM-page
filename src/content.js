@@ -90,7 +90,7 @@ export const content = {
       'A Proven, Step-By-Step System Designed To Help Gym Owners Overcome These Challenges, Attract More Members, Increase Revenue, And Double Their Gym\'s Profits In The Next 90 Days, Guaranteed.',
     ],
     storyEmphasis: [null, null, '4-Step Hyperscalable Gym Growth System', 'Double Their Gym\'s Profits In The Next 90 Days, Guaranteed.'],
-    ctaLabel: 'Yes, I Want To Double My Gym Profit',
+    ctaLabel: 'Show Me the Gym Growth Strategy',
   },
   workshop: {
     eyebrow: 'The Gym Growth System',
@@ -125,7 +125,7 @@ export const content = {
       'Finally Afford The Things You\'ve Always Dreamed Of.',
     ],
     closing: 'If This Is The Kind Of Gym Business We Build For You',
-    ctaLabel: 'Yes, I Want To Double My Gym Profit',
+    ctaLabel: "Yes, Show Me How To Double My Gym's Profit",
   },
   proof: {
     title: 'See What Other Gym Owners Say About Us',
