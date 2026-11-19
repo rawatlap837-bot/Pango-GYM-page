@@ -225,6 +225,13 @@ h1,h2,h3,h4,h5,h6,.ba-title{
 }
 .mobile-cta{z-index:60;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:transparent;border:0;box-shadow:none}
 .mobile-cta .button-primary{display:flex;width:100%;max-width:520px;min-height:52px;margin-inline:auto;padding:.85rem .55rem;border-radius:12px;background:#f1c935;color:#313131;white-space:nowrap}
+.mobile-cta .mobile-cta-button{min-height:64px!important;padding:7px 12px!important}
+.mobile-cta .mobile-cta-button .button-label{width:100%}
+.mobile-cta-content{display:grid;justify-items:center;gap:3px;width:100%;line-height:1.15}
+.mobile-cta-label{font-size:15px;font-weight:800}
+.mobile-cta-meta{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:900;line-height:1.1}
+.mobile-cta-meta del{font-size:13px;opacity:.72}
+.mobile-cta-price{color:#9b1c1c;font-size:14px;font-weight:950}
 .mobile-cta .button-primary:hover{background:#ffdc56}
 @media(min-width:641px){.mobile-cta{display:none}}
 .hero-atmosphere{position:absolute;z-index:0;inset:0;overflow:hidden;pointer-events:none}

@@ -9,11 +9,24 @@ import Button from './components/Button'
 import TestimonialCarousel, { VideoTestimonialCarousel } from './components/TestimonialCarousel'
 import Guarantee from './components/Guarantee'
 import MentorVideo from './components/MentorVideo'
+import UrgencyNotice from './components/UrgencyNotice'
 import { useEffect, useState } from 'react'
 import { animate } from 'animejs'
 
 export default function App() {
   const [showMobileCta, setShowMobileCta] = useState(false)
+  const [visitSecondsLeft, setVisitSecondsLeft] = useState(120)
+
+  useEffect(() => {
+    let intervalId
+    intervalId = window.setInterval(() => {
+      setVisitSecondsLeft((remaining) => {
+        if (remaining <= 1) return 120
+        return remaining - 1
+      })
+    }, 1000)
+    return () => window.clearInterval(intervalId)
+  }, [])
 
   useEffect(() => {
     const hero = document.querySelector('.hero')
@@ -26,6 +39,8 @@ export default function App() {
     observer.observe(hero)
     return () => observer.disconnect()
   }, [])
+
+  const visitTimer = `${Math.floor(visitSecondsLeft / 60)}:${String(visitSecondsLeft % 60).padStart(2, '0')}`
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
@@ -71,6 +86,7 @@ export default function App() {
 
   return (
     <>
+      <UrgencyNotice />
       <main>
         <Hero />
         <Features />
@@ -112,7 +128,21 @@ export default function App() {
         <Faq />
       </main>
       <Footer />
-      {showMobileCta && <div className="mobile-cta"><Button className="mobile-cta-button" href={content.cta.href}>{content.cta.label}</Button></div>}
+      {showMobileCta && (
+        <div className="mobile-cta">
+          <Button className="mobile-cta-button" href={content.cta.href}>
+            <span className="mobile-cta-content">
+              <span className="mobile-cta-label">Register Now</span>
+              <span className="mobile-cta-meta">
+                <del>₹399</del>
+                <span>Only <strong className="mobile-cta-price">₹97</strong></span>
+                <span aria-hidden="true">·</span>
+                <span aria-label={`Visit timer: ${visitTimer} remaining`}>Visit timer {visitTimer}</span>
+              </span>
+            </span>
+          </Button>
+        </div>
+      )}
     </>
   )
 }

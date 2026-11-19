@@ -118,6 +118,24 @@ const HERO_OVERLAY_CSS = `
   text-align: center;
 }
 .hero-action-below-video p { max-width: none; margin: 0; font-size: 16px; }
+.hero-action-below-video .hero-price {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-shadow: none;
+}
+.hero-price del { color: rgba(255, 255, 255, 0.82); font-size: 1em; }
+.hero-price strong { color: #f1c935; font-size: 1.35em; font-weight: 950; }
 @media (max-width: 640px) {
   .hero-action-below-video {
     flex-direction: column;
@@ -128,6 +146,7 @@ const HERO_OVERLAY_CSS = `
   }
   .hero-action-below-video .button-primary { width: min(100%, 420px); }
   .hero-action-below-video p { font-size: 13px; }
+  .hero-action-below-video .hero-price { font-size: 18px; }
 }
 .hero-subtitle {
   color: #fff;
@@ -199,7 +218,6 @@ export default function Hero() {
   return (
     <section className="hero" id="top">
       <style>{HERO_OVERLAY_CSS}</style>
-
       <HeroAtmosphere />
       <div className="hero-overlay" aria-hidden="true" />
 
@@ -244,6 +262,7 @@ export default function Hero() {
 
       <div className="hero-action hero-action-below-video">
         <Button href={content.cta.href}>{content.cta.label}</Button>
+        <p className="hero-price"><span>Only</span><del>₹399</del><span aria-hidden="true">→</span><strong>₹97</strong></p>
         <p>{note}</p>
       </div>
       <div className="hero-logos">
