@@ -31,11 +31,19 @@ const css = `
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
 }
 .offer-section .offer-heading {
-  margin: 0 auto 28px;
+  margin: 0 auto 8px;
   text-align: center;
   text-wrap: balance;
   font-size: clamp(26px, 4.4vw, 42px);
   line-height: 1.2;
+}
+.offer-section .offer-subheading {
+  margin: 0 auto 28px;
+  color: #ffd84d;
+  font-size: clamp(14px, 3vw, 16px);
+  font-weight: 750;
+  line-height: 1.5;
+  text-align: center;
 }
 .offer-section .offer-highlight-price {
   color: #f1c935;
@@ -190,6 +198,16 @@ const css = `
   font-weight: 950;
   letter-spacing: 0.02em;
 }
+.offer-section .offer-bonus-badge del {
+  color: #a61b1b;
+  font-size: 14px;
+  font-weight: 800;
+}
+.offer-section .offer-bonus-free {
+  color: #a61b1b;
+  font-size: 15px;
+  font-weight: 950;
+}
 
 @media (max-width: 520px) {
   .offer-section .offer-box {
@@ -249,6 +267,7 @@ export default function Contact() {
           Wait! There's More – Get 7 Exclusive Bonuses Worth{' '}
           <span className="offer-highlight-price">{totalValue}</span> FREE!
         </h2>
+        <p className="offer-subheading">Available only if you sign up today.</p>
 
         <div className="offer-box">
           <div className="offer-box-top">
@@ -267,7 +286,7 @@ export default function Contact() {
                   <span className="offer-bonus-title">{b.title}</span>
                 </div>
                 <span className="offer-bonus-badge">
-                  Value: <strong>{b.value}</strong>
+                  Value: <del>{b.value}</del> <span className="offer-bonus-free">FREE</span>
                 </span>
               </li>
             ))}
