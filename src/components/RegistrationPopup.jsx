@@ -4,6 +4,7 @@ import './RegistrationPopup.css'
 
 const EMPTY_VALUES = { name: '', phone: '', email: '', gymName: '', website: '' }
 const FIELD_NAMES = ['name', 'phone', 'email', 'gymName']
+const PAYMENT_URL = 'https://rzp.io/rzp/LnYf71MV'
 
 export default function RegistrationPopup({ onClose }) {
   const dialogRef = useRef(null)
@@ -102,7 +103,7 @@ export default function RegistrationPopup({ onClose }) {
       if (result?.ok !== true) {
         throw new Error('We couldn’t submit your details. Please try again.')
       }
-      if (mountedRef.current) setStatus('success')
+      window.location.assign(PAYMENT_URL)
     } catch (error) {
       if (!mountedRef.current) return
       const fieldErrors = Object.fromEntries(

@@ -3,7 +3,8 @@ import { readFileSync } from 'node:fs'
 import test from 'node:test'
 import vm from 'node:vm'
 
-const script = readFileSync(new URL('../code.js', import.meta.url), 'utf8')
+const script = readFileSync(new URL('../GoogleSheets.gs', import.meta.url), 'utf8')
+const spreadsheetId = '1yrMuIfk6MZP3wOhR7FuM9jyVxr9_eYB8PMN5qd6p9MA'
 const validSubmission = {
   name: 'Asha Shah',
   phone: '+91 98765 43210',
@@ -18,6 +19,7 @@ function createBackend(options = {}) {
   const events = []
   let held = false
   let sheetExists = options.sheetExists ?? false
+  const properties = { SPREADSHEET_ID: 'test-sheet', ...options.properties }
   const requireLock = () => assert.equal(held, true, 'sheet operations must hold the script lock')
   const sheet = {
     getLastRow() { requireLock(); return rows.length },
@@ -42,26 +44,9 @@ function createBackend(options = {}) {
         },
         setNumberFormat(format) {
           requireLock()
-          assert.deepEqual([column, height, width, format], [2, 1, 5, '@'])
+          assert.deepEqual([column, height, width, format], [2, 1, 4, '@'])
           events.push('text-format')
           return this
-        },
-        createTextFinder(search) {
-          requireLock()
-          assert.equal(column, 6)
-          let entireCell = false
-          let matchCase = false
-          return {
-            matchEntireCell(value) { entireCell = value; return this },
-            matchCase(value) { matchCase = value; return this },
-            findNext() {
-              requireLock()
-              assert.equal(entireCell, true)
-              assert.equal(matchCase, true)
-              events.push('find-duplicate')
-              return rows.slice(row - 1, row - 1 + height).find(values => values[5] === search) ?? null
-            },
-          }
         },
       }
     },
@@ -75,14 +60,17 @@ function createBackend(options = {}) {
     },
     PropertiesService: {
       getScriptProperties() {
-        return { getProperty(key) { return ({ SPREADSHEET_ID: 'test-sheet', ...options.properties })[key] ?? null } }
+        return {
+          getProperty(key) { return properties[key] ?? null },
+          setProperty(key, value) { properties[key] = value; events.push(`property:${key}`) },
+        }
       },
     },
     LockService: {
       getScriptLock() {
         return {
           tryLock(timeout) {
-            assert.equal(timeout, 10000)
+            assert.equal(timeout, 30000)
             assert.equal(held, false)
             held = !options.busy
             events.push(held ? 'lock' : 'busy')
@@ -92,10 +80,11 @@ function createBackend(options = {}) {
         }
       },
     },
+    Logger: { log(message) { events.push(`log:${message}`) } },
     SpreadsheetApp: {
       openById(id) {
         requireLock()
-        assert.equal(id, 'test-sheet')
+        assert.equal(id, spreadsheetId)
         events.push('open')
         return {
           getSheetByName(name) { requireLock(); assert.equal(name, options.properties?.SHEET_NAME || 'Registrations'); return sheetExists ? sheet : null },
@@ -109,6 +98,9 @@ function createBackend(options = {}) {
   return {
     rows,
     events,
+    properties,
+    setupRegistrationSheet() { return context.setupRegistrationSheet() },
+    getStatus() { return JSON.parse(context.doGet().body) },
     submit(parameters = validSubmission, postData) {
       const result = context.doPost({ parameter: parameters, postData })
       assert.equal(result.type, 'application/json')
@@ -118,12 +110,31 @@ function createBackend(options = {}) {
   }
 }
 
+test('setup stores the supplied spreadsheet ID and default tab name', () => {
+  const backend = createBackend({ properties: { SPREADSHEET_ID: 'old-sheet' } })
+  assert.equal(backend.setupRegistrationSheet(), `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`)
+  assert.equal(backend.properties.SPREADSHEET_ID, spreadsheetId)
+  assert.equal(backend.properties.SHEET_NAME, 'Registrations')
+  assert.deepEqual(backend.events, [
+    'property:SPREADSHEET_ID', 'property:SHEET_NAME',
+    `log:Registration spreadsheet configured: https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`,
+  ])
+})
+
+test('GET reports that the registration endpoint is live', () => {
+  const backend = createBackend()
+  assert.deepEqual(backend.getStatus(), {
+    ok: true,
+    message: 'Registration endpoint is live. Submit the website form to save your details.',
+  })
+})
+
 test('saves the three required fields when optional gym name is blank', () => {
   const backend = createBackend()
   assert.deepEqual(backend.submit(), { ok: true, submissionId: validSubmission.submissionId })
-  assert.deepEqual(Array.from(backend.rows[0]), ['Timestamp', 'Name', 'Phone Number', 'Email', 'Gym Name', 'Submission ID'])
+  assert.deepEqual(Array.from(backend.rows[0]), ['Timestamp', 'Name', 'Phone Number', 'Email', 'Gym Name'])
   assert.equal(Object.prototype.toString.call(backend.rows[1][0]), '[object Date]')
-  assert.deepEqual(Array.from(backend.rows[1].slice(1)), ['Asha Shah', "'+919876543210", 'asha@example.com', '', validSubmission.submissionId])
+  assert.deepEqual(Array.from(backend.rows[1].slice(1)), ['Asha Shah', "'+919876543210", 'asha@example.com', ''])
   assert.deepEqual(backend.events, ['lock', 'open', 'create', 'headers', 'text-format', 'write', 'flush', 'release'])
 })
 
@@ -157,21 +168,24 @@ test('rejects honeypots, missing submission IDs, and oversized payloads without 
   assert.deepEqual(backend.events, [])
 })
 
-test('duplicate request retries return confirmation without writing a second row', () => {
+test('retry requests append without scanning or storing submission IDs', () => {
   const backend = createBackend()
   assert.equal(backend.submit().ok, true)
   assert.deepEqual(backend.submit(), { ok: true, submissionId: validSubmission.submissionId })
-  assert.equal(backend.rows.length, 2)
-  assert.equal(backend.events.filter(event => event === 'write').length, 1)
-  assert.deepEqual(backend.events.slice(-4), ['lock', 'open', 'find-duplicate', 'release'])
+  assert.equal(backend.rows.length, 3)
+  assert.equal(backend.events.filter(event => event === 'write').length, 2)
+  assert.equal(Object.prototype.toString.call(backend.rows[2][0]), '[object Date]')
+  assert.deepEqual(Array.from(backend.rows[2].slice(1)), ['Asha Shah', "'+919876543210", 'asha@example.com', ''])
+  assert.ok(!backend.events.includes('find-duplicate'))
 })
 
-test('distinct IDs write separate rows while checking duplicates inside the lock', () => {
+test('distinct submissions append rows without a submission ID column', () => {
   const backend = createBackend({ properties: { SHEET_NAME: 'Gym Leads' } })
   assert.equal(backend.submit().ok, true)
   assert.equal(backend.submit({ ...validSubmission, submissionId: 'bd166c04-e1db-4cfc-8e11-e01d491e4e46' }).ok, true)
   assert.equal(backend.rows.length, 3)
-  assert.deepEqual(backend.events.slice(-7), ['lock', 'open', 'find-duplicate', 'text-format', 'write', 'flush', 'release'])
+  assert.equal(backend.rows[2].length, 5)
+  assert.deepEqual(backend.events.slice(-6), ['lock', 'open', 'text-format', 'write', 'flush', 'release'])
 })
 
 test('spreadsheet formula strings are escaped and phone numbers remain text', () => {
@@ -183,13 +197,13 @@ test('spreadsheet formula strings are escaped and phone numbers remain text', ()
   assert.ok(backend.events.indexOf('text-format') < backend.events.indexOf('write'))
 })
 
-test('busy and unconfigured backends never confirm a submission or write data', () => {
+test('busy backends fail and an empty property falls back to the configured spreadsheet ID', () => {
   const busy = createBackend({ busy: true })
   assert.equal(busy.submit().ok, false)
   assert.deepEqual(busy.events, ['busy'])
   const unconfigured = createBackend({ properties: { SPREADSHEET_ID: '' } })
-  assert.equal(unconfigured.submit().ok, false)
-  assert.deepEqual(unconfigured.events, [])
+  assert.equal(unconfigured.submit().ok, true)
+  assert.equal(unconfigured.events[1], 'open')
 })
 
 test('write failures release the lock and keep internal details out of the response', () => {

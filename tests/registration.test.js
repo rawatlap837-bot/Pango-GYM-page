@@ -125,6 +125,15 @@ test('posts exactly normalized fields as URL-encoded data and reads a matching c
   assert.deepEqual(result, { ok: true, submissionId })
 })
 
+test('uses the configured Apps Script URL when no endpoint is passed', async () => {
+  await submitRegistration(validFields, {
+    async fetchImpl(url) {
+      assert.equal(url, 'https://script.google.com/macros/s/AKfycbwShfk3GN4e5RZ_h0hEau3c40IwebGFnWZg1ifCXaWZiDLkxtVjIeqUx36gDKq5nYcZdA/exec')
+      return confirmed()
+    },
+  })
+})
+
 test('required-only submissions send an empty gym name and retain the honeypot for server validation', async () => {
   await submitRegistration({ ...validFields, website: 'spam.example' }, {
     endpoint,
@@ -144,7 +153,7 @@ test('invalid input, IDs, or deployment URLs never make a network request', asyn
     return true
   })
   for (const badEndpoint of [
-    '', undefined, 'not-a-url', 'http://script.google.com/macros/s/test/exec',
+    '', null, 'not-a-url', 'http://script.google.com/macros/s/test/exec',
     'https://example.com/macros/s/test/exec', 'https://script.google.com/macros/s/test/dev',
     'https://user:password@script.google.com/macros/s/test/exec',
     'https://script.google.com:8443/macros/s/test/exec',

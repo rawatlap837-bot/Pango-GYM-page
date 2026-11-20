@@ -5,6 +5,7 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{
 // eslint-disable-next-line no-control-regex
 const CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]/
 const UNCONFIRMED_MESSAGE = 'We couldn’t confirm your submission. Please try again.'
+const REGISTRATION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwShfk3GN4e5RZ_h0hEau3c40IwebGFnWZg1ifCXaWZiDLkxtVjIeqUx36gDKq5nYcZdA/exec'
 
 export function normalizeRegistration(values) {
   return {
@@ -60,7 +61,7 @@ function isAppsScriptEndpoint(endpoint) {
 }
 
 export async function submitRegistration(values, {
-  endpoint = import.meta.env?.VITE_GOOGLE_SCRIPT_URL,
+  endpoint = REGISTRATION_ENDPOINT,
   fetchImpl = globalThis.fetch,
   timeoutMs = 20000,
 } = {}) {
