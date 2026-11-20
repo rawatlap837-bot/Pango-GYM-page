@@ -122,9 +122,9 @@ export default function App() {
           </div>
         </section>
         <BeforeAfter />
+        <Contact />
         <Guarantee />
 
-        <Contact />
         <Faq />
       </main>
       <Footer />
@@ -134,7 +134,7 @@ export default function App() {
             <span className="mobile-cta-content">
               <span className="mobile-cta-label">Register Now</span>
               <span className="mobile-cta-meta">
-                <del>₹399</del>
+                <del>₹2,999</del>
                 <span>Only <strong className="mobile-cta-price">₹97</strong></span>
                 <span aria-hidden="true">·</span>
                 <span aria-label={`Visit timer: ${visitTimer} remaining`}>Visit timer {visitTimer}</span>

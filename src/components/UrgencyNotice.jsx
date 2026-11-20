@@ -11,21 +11,21 @@ const MESSAGE = 'just registered'
 
 // Replace these with your own names, cities and times (add or remove rows freely)
 const SIGNUPS = [
-    { name: 'Aditya', city: 'Noida', ago: '8 seconds ago' },
-    { name: 'Priya', city: 'Delhi', ago: '25 seconds ago' },
-    { name: 'Rahul', city: 'Greater Noida', ago: '1 minute ago' },
-    { name: 'Neha', city: 'Ghaziabad', ago: '2 minutes ago' },
-    { name: 'Rohit', city: 'Gurugram', ago: '3 minutes ago' },
-    { name: 'Ankit', city: 'Meerut', ago: '4 minutes ago' },
-    { name: 'Pooja', city: 'Lucknow', ago: '6 minutes ago' },
-    { name: 'Vikram', city: 'Faridabad', ago: '7 minutes ago' },
-    { name: 'Sneha', city: 'Jaipur', ago: '9 minutes ago' },
-    { name: 'Mohit', city: 'Noida', ago: '11 minutes ago' },
-    { name: 'Kavita', city: 'Dehradun', ago: '13 minutes ago' },
-    { name: 'Arjun', city: 'Chandigarh', ago: '15 minutes ago' },
-    { name: 'Deepak', city: 'Delhi', ago: '18 minutes ago' },
-    { name: 'Simran', city: 'Ludhiana', ago: '21 minutes ago' },
-    { name: 'Karan', city: 'Agra', ago: '24 minutes ago' },
+    { name: 'Aditya', city: 'Surat', ago: '8 seconds ago' },
+    { name: 'Priya', city: 'Ahmedabad', ago: '25 seconds ago' },
+    { name: 'Rahul', city: 'Mumbai', ago: '1 minute ago' },
+    { name: 'Neha', city: 'Pune', ago: '2 minutes ago' },
+    { name: 'Rohit', city: 'Kerala', ago: '3 minutes ago' },
+    { name: 'Ankit', city: 'Bangalore', ago: '4 minutes ago' },
+    { name: 'Pooja', city: 'Hyderabad', ago: '6 minutes ago' },
+    { name: 'Vikram', city: 'Delhi', ago: '7 minutes ago' },
+    { name: 'Sneha', city: 'Baroda', ago: '9 minutes ago' },
+    { name: 'Mohit', city: 'Navi Mumbai', ago: '11 minutes ago' },
+    { name: 'Kavita', city: 'Bhopal', ago: '13 minutes ago' },
+    { name: 'Arjun', city: 'Indore', ago: '15 minutes ago' },
+    { name: 'Deepak', city: 'Surat', ago: '18 minutes ago' },
+    { name: 'Simran', city: 'Ahmedabad', ago: '21 minutes ago' },
+    { name: 'Karan', city: 'Mumbai', ago: '24 minutes ago' },
 ]
 
 /* ------------------------------------------------------------------ */
