@@ -262,7 +262,7 @@ export default function Hero() {
 
       <div className="hero-action hero-action-below-video">
         <Button href={content.cta.href}>{content.cta.label}</Button>
-        <p className="hero-price"><span>Only</span><del>₹2,999</del><span aria-hidden="true">→</span><strong>₹97</strong></p>
+        <p className="hero-price"><span>Only</span><del>₹2,999</del><span aria-hidden="true">→</span><strong>₹999</strong></p>
         <p>{note}</p>
       </div>
       <div className="hero-logos">
